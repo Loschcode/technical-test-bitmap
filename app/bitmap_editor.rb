@@ -36,6 +36,12 @@ class BitmapEditor
         when 'S'
           print display_map
 
+        when 'H'
+          change_horizontal_segment_map(*args)
+
+        when 'V'
+          change_vertical_segment_map(*args)
+
         else
           puts 'unrecognised command :('
 
@@ -72,6 +78,34 @@ class BitmapEditor
     def change_map(x, y, color)
 
       @bitmap[x.to_i][y.to_i] = color
+
+    end
+
+    def change_horizontal_segment_map(from_column, to_column, row, color)
+
+      @bitmap[row.to_i-1].map!.with_index do |line, index|
+
+        if (from_column.to_i-1..to_column.to_i-1).include? index
+          color
+        else
+          line
+        end
+
+      end
+
+      @bitmap
+
+    end
+
+    def change_vertical_segment_map(column, from_row, to_row, color)
+
+      (from_row.to_i-1..to_row.to_i-1).map do |row|
+
+        @bitmap[row][column.to_i-1] = color
+
+      end
+
+      @bitmap
 
     end
 

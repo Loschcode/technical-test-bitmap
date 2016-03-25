@@ -36,6 +36,24 @@ RSpec.describe BitmapEditor do
 
     end
 
+    it "changes the vertical segment of the map" do
+
+       expect(editor.send(:change_vertical_segment_map, "2", "3", "5", "C")).to match_array([["0", "0", "0", "0", "0"],["0", "0", "0", "0", "0"],["0", "C", "0", "0", "0"],["0", "C", "0", "0", "0"],["0", "C", "0", "0", "0"],["0", "0", "0", "0", "0"]])
+
+    end
+
+    it "clears the map" do
+
+       expect(editor.send(:clear_map)).to match_array([["0"]*5]*6)
+
+    end
+
+    it "changes the horizontal segment of the map" do
+
+       expect(editor.send(:change_horizontal_segment_map, "3", "5", "2", "D")).to match_array([["0", "0", "0", "0", "0"],["0", "0", "D", "D", "D"],["0", "0", "0", "0", "0"],["0", "0", "0", "0", "0"],["0", "0", "0", "0", "0"],["0", "0", "0", "0", "0"]])
+
+    end
+
   end
 
 end
