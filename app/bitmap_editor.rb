@@ -77,7 +77,9 @@ class BitmapEditor
 
     def change_map(x, y, color)
 
-      @bitmap[x.to_i][y.to_i] = color
+      @bitmap[x.to_i-1][y.to_i-1] = color
+
+      @bitmap
 
     end
 
