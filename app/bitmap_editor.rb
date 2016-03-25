@@ -30,6 +30,9 @@ class BitmapEditor
         when 'C'
           clear_map
 
+        when 'L'
+          change_map(*args)
+
         when 'S'
           print display_map
 
@@ -63,6 +66,12 @@ class BitmapEditor
       @bitmap.each do |row|
         row.map! { |line| "0" }
       end
+
+    end
+
+    def change_map(x, y, color)
+
+      @bitmap[x.to_i][y.to_i] = color
 
     end
 
