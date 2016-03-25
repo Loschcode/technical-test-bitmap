@@ -30,6 +30,12 @@ RSpec.describe BitmapEditor do
 
     end
 
+    it "clears the map" do
+
+       expect(editor.send(:clear_map)).to match_array([["0"]*5]*6)
+
+    end
+
   end
 
 end
