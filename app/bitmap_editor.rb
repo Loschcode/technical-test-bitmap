@@ -2,6 +2,8 @@ class BitmapEditor
 
   attr_reader :running, :bitmap
 
+  DEFAULT_COLOR = "0"
+
   def run
 
     @running = true
@@ -78,7 +80,7 @@ class BitmapEditor
       return if width.to_i <= 0 || height.to_i <= 0
       
       @bitmap = (1..height.to_i).map do |line|
-          ["0"] * width.to_i
+          [DEFAULT_COLOR] * width.to_i
       end
 
     end
@@ -88,7 +90,7 @@ class BitmapEditor
       return if @bitmap.nil?
 
       @bitmap.each do |line|
-        line.map! { |row| "0" }
+        line.map! { |row| DEFAULT_COLOR }
       end
  
     end
