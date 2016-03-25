@@ -1,13 +1,13 @@
 class BitmapEditor
 
-  #require 'pry'
-  
+  attr_reader :running, :bitmap
+
   def run
 
     @running = true
     puts 'type ? for help'
 
-    while @running
+    while running
 
       print '> '
 
@@ -18,42 +18,13 @@ class BitmapEditor
 
       begin
 
-        case words.first
+        manage_commands(words.first, args)
 
-          when '?'
-            show_help
+      rescue
 
-          when 'X'
-            exit_console
+        puts "wrong syntax :( please type `?` for further details"
 
-          when 'I'
-            generate_map(*args)
-
-          when 'C'
-            clear_map
-
-          when 'L'
-            change_map(*args)
-
-          when 'S'
-            print display_map
-
-          when 'H'
-            change_horizontal_segment_map(*args)
-
-          when 'V'
-            change_vertical_segment_map(*args)
-
-          else
-            puts 'unrecognised command :('
-
-        end
-
-        rescue => e
-
-          puts "wrong syntax :( please type `?` for further details"
-
-        end
+      end
 
     end
 
@@ -61,33 +32,70 @@ class BitmapEditor
 
   private
 
+    def manage_commands(command, args)
+
+      case command
+
+      when '?'
+        show_help
+
+      when 'X'
+        exit_console
+
+      when 'I'
+        generate_map(*args)
+
+      when 'C'
+        clear_map
+
+      when 'L'
+        change_map(*args)
+
+      when 'S'
+        print display_map
+
+      when 'H'
+        change_horizontal_segment_map(*args)
+
+      when 'V'
+        change_vertical_segment_map(*args)
+
+      else
+        puts 'unrecognised command :('
+
+      end
+
+    end
+
     def display_map
 
-      @bitmap.map { |line| line.join }.join("\n") << "\n" unless @bitmap.nil?
+      @bitmap.map { |line| line.join }.join("\n") << "\n" unless bitmap.nil?
 
     end
 
     def generate_map(width, height)
       
+      return if width.to_i <= 0 || height.to_i <= 0
+      
       @bitmap = (1..height.to_i).map do |line|
           ["0"] * width.to_i
-      end unless width.to_i <= 0 or height.to_i <= 0
+      end
 
     end
 
     def clear_map
 
-      @bitmap.each do |row|
-        row.map! { |line| "0" }
-      end unless @bitmap.nil?
+      return if @bitmap.nil?
 
+      @bitmap.each do |line|
+        line.map! { |row| "0" }
+      end
+ 
     end
 
-    def change_map(x, y, color:"0")
+    def change_map(x, y, color)
 
       @bitmap[x.to_i-1][y.to_i-1] = color
-
-      @bitmap
 
     end
 
@@ -103,8 +111,6 @@ class BitmapEditor
 
       end
 
-      @bitmap
-
     end
 
     def change_vertical_segment_map(column, from_row, to_row, color)
@@ -115,24 +121,30 @@ class BitmapEditor
 
       end
 
-      @bitmap
-
     end
 
     def exit_console
+
       puts 'goodbye!'
       @running = false
+
     end
 
     def show_help
-      puts "? - Help
+
+      puts """
+
+? - Help
 I M N - Create a new M x N image with all pixels coloured white (O).
 C - Clears the table, setting all pixels to white (O).
 L X Y C - Colours the pixel (X,Y) with colour C.
 V X Y1 Y2 C - Draw a vertical segment of colour C in column X between rows Y1 and Y2 (inclusive).
 H X1 X2 Y C - Draw a horizontal segment of colour C in row Y between columns X1 and X2 (inclusive).
 S - Show the contents of the current image
-X - Terminate the session"
+X - Terminate the session
+
+            """
+
     end
 
 end
