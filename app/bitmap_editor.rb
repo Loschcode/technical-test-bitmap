@@ -16,36 +16,44 @@ class BitmapEditor
       words = input.split("\ ")
       args = words.drop(1)
 
-      case words.first
+      begin
 
-        when '?'
-          show_help
+        case words.first
 
-        when 'X'
-          exit_console
+          when '?'
+            show_help
 
-        when 'I'
-          generate_map(*args)
+          when 'X'
+            exit_console
 
-        when 'C'
-          clear_map
+          when 'I'
+            generate_map(*args)
 
-        when 'L'
-          change_map(*args)
+          when 'C'
+            clear_map
 
-        when 'S'
-          print display_map
+          when 'L'
+            change_map(*args)
 
-        when 'H'
-          change_horizontal_segment_map(*args)
+          when 'S'
+            print display_map
 
-        when 'V'
-          change_vertical_segment_map(*args)
+          when 'H'
+            change_horizontal_segment_map(*args)
 
-        else
-          puts 'unrecognised command :('
+          when 'V'
+            change_vertical_segment_map(*args)
 
-      end
+          else
+            puts 'unrecognised command :('
+
+        end
+
+        rescue => e
+
+          puts "wrong syntax :( please type `?` for further details"
+
+        end
 
     end
 
@@ -55,7 +63,7 @@ class BitmapEditor
 
     def display_map
 
-      @bitmap.map { |line| line.join }.join("\n") << "\n"
+      @bitmap.map { |line| line.join }.join("\n") << "\n" unless @bitmap.nil?
 
     end
 
@@ -63,7 +71,7 @@ class BitmapEditor
       
       @bitmap = (1..height.to_i).map do |line|
           ["0"] * width.to_i
-      end
+      end unless width.to_i <= 0 or height.to_i <= 0
 
     end
 
@@ -71,11 +79,11 @@ class BitmapEditor
 
       @bitmap.each do |row|
         row.map! { |line| "0" }
-      end
+      end unless @bitmap.nil?
 
     end
 
-    def change_map(x, y, color)
+    def change_map(x, y, color:"0")
 
       @bitmap[x.to_i-1][y.to_i-1] = color
 
