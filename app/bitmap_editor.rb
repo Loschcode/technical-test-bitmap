@@ -1,23 +1,52 @@
 class BitmapEditor
 
+  #require 'pry'
+  
   def run
+
     @running = true
     puts 'type ? for help'
+
     while @running
+
       print '> '
+
       input = gets.chomp
-      case input
+
+      words = input.split("\ ")
+      args = words.drop(1)
+
+      case words.first
+
         when '?'
+          binding.pry
           show_help
+
         when 'X'
           exit_console
+
+        when 'I'
+          generate_map(*args)
+          
         else
           puts 'unrecognised command :('
+
       end
+
     end
+
   end
 
   private
+
+    def generate_map(width, height)
+      
+      @bitmap = (1..height.to_i).map do |line|
+          ["0"] * width.to_i
+      end
+
+    end
+
     def exit_console
       puts 'goodbye!'
       @running = false
@@ -33,4 +62,5 @@ H X1 X2 Y C - Draw a horizontal segment of colour C in row Y between columns X1 
 S - Show the contents of the current image
 X - Terminate the session"
     end
+
 end
