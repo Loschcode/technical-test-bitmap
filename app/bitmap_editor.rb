@@ -19,7 +19,6 @@ class BitmapEditor
       case words.first
 
         when '?'
-          binding.pry
           show_help
 
         when 'X'
@@ -27,7 +26,13 @@ class BitmapEditor
 
         when 'I'
           generate_map(*args)
-          
+
+        when 'C'
+          clear_map
+
+        when 'S'
+          print display_map
+
         else
           puts 'unrecognised command :('
 
@@ -39,10 +44,24 @@ class BitmapEditor
 
   private
 
+    def display_map
+
+      @bitmap.map { |line| line.join }.join("\n") << "\n"
+
+    end
+
     def generate_map(width, height)
       
       @bitmap = (1..height.to_i).map do |line|
           ["0"] * width.to_i
+      end
+
+    end
+
+    def clear_map
+
+      @bitmap.each do |row|
+        row.map! { |line| "0" }
       end
 
     end
